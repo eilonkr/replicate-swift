@@ -18,7 +18,7 @@ public class Client {
     private let token: String
 
     /// The underlying client session.
-    internal var session = URLSession(configuration: .default)
+    internal var session: URLSession
 
     /// The retry policy for requests made by the client.
     public var retryPolicy: RetryPolicy = .default
@@ -32,7 +32,9 @@ public class Client {
     public init(
         baseURLString: String = "https://api.replicate.com/v1/",
         userAgent: String? = nil,
-        token: String
+        token: String,
+        urlSessionConfiguration: URLSessionConfiguration = .default,
+        urlSesionDelegate: URLSessionDelegate? = nil
     )
     {
         var baseURLString = baseURLString
@@ -43,6 +45,11 @@ public class Client {
         self.baseURLString = baseURLString
         self.userAgent = userAgent
         self.token = token
+        self.session = URLSession(
+            configuration: urlSessionConfiguration,
+            delegate: urlSesionDelegate,
+            delegateQueue: nil
+        )
     }
 
     // MARK: -
